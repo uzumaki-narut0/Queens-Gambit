@@ -1,0 +1,17 @@
+{
+  "name": "Socket Chess",
+  "version": "1.0",
+  "description": "A real time chess using socket.io",
+  "engines": {
+    "node": "6.9.4"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "chess.js": "^0.10.2",
+    "express": "^4.15.3",
+    "socket.io": "^2.0.1"
+  }
+}
