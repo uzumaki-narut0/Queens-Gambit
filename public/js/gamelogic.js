@@ -1,8 +1,5 @@
 // board defaults to the starting position when called with no parameters
-var game = new Chess(),
-	statusEl = $('#status'),
-	 fenEl = $('#fen'),
-	 pgnEl = $('#pgn');
+var game = new Chess();
 
 
 // do not pick up pieces if the game is over

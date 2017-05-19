@@ -54,12 +54,18 @@
         </div>
       </div>
       <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--7-col-tablet mdl-cell--7-col-desktop">
-      <div id="board"></div>
-        <p>Status: <span id="status"></span></p>
-        <p>FEN: <span id="fen"></span></p>
-        <p>PGN: <span id="pgn"></span></p>
 
+      <!-- Accent-colored raised button with ripple -->
+      <button id="creategame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        Create a Game
+      </button>
+      <div id="board"></div>
+
+      <button id="joingame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        Join a Game
+      </button>
       </div>
+
 
       <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
         <div class="mdl-snackbar__text"></div>
@@ -78,7 +84,7 @@
 
     //on connection to server ask for user's name with an anonymous callback
     socket.on('connect',function(){
-      socket.emit('play',prompt("What's your name"));
+      console.log('client successfully connected');
     });
 
     socket.on('updatechat',function(user, data){
@@ -128,11 +134,22 @@
             }
           }
 
-          statusEl.html(status);
-          fenEl.html(game.fen());
-          pgnEl.html(game.pgn());
+          console.log(status);
+          console.log(game.fen());
+          console.log(game.pgn());
         };
 
+    });
+  </script>
+
+  <script type="text/javascript">
+    $("#creategame").on('click', function(){
+      socket.emit('play',prompt("What's your name"));
+      console.log(Math.random().toString(36).slice(2)); //generating random key
+    });
+
+    $("#joingame").on("click", function(){
+      socket.emit('join',prompt("What's your name"), prompt("unique key of the game"));
     });
   </script>
   

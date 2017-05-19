@@ -24,6 +24,7 @@ io.on('connection', function(socket){
   	//stores the username in socket session for this client
   	console.log(user_name);
   	socket.username = user_name;
+  	socket.uniquekey = Math.random().toString(36).slice(2);	//a unique key corresponding to this game
 
   	users[user_name] = user_name;
   	console.log(Object.keys(users).length);
@@ -43,6 +44,35 @@ io.on('connection', function(socket){
   	socket.emit('updaterooms',rooms,'room1');
 
   });
+
+
+
+  //when the client emits join, this listenes and executes
+  socket.on('join',function(user_name, unique_key){
+
+  	//stores the username in socket session for this client
+  	console.log(user_name + " : " + unique_key);
+  	socket.username = user_name;
+
+  	users[user_name] = user_name;
+  	console.log(Object.keys(users).length);
+
+  	//stores the user room in socket session for this client
+  	socket.room = 'room1';
+
+  	//send client to room1
+  	socket.join('room1');
+
+  	//echo to client they have connected!
+  	socket.emit('updatechat','SERVER','You have connected to room1');
+
+  	//echo to room1 that a person has connected to room1
+  	socket.broadcast.to('room1').emit('updatechat','SERVER',user_name + 'has connected to this room');
+
+  	socket.emit('updaterooms',rooms,'room1');
+
+  });
+
 
   //when the client emits send move, this listenes and executes
   socket.on('sendmove',function(source, target){
