@@ -1,19 +1,24 @@
 var express = require('express');
+var path = require('path');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);	//socket server which integrates with (mounts on) http server
+var hbs = require('express-handlebars');
 
 //app.use(express.static('public'));
 app.use(express.static(__dirname + '/public'));
-
 var portnumber = process.env.PORT || 8080;
+
+app.engine('hbs',hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname+'/views'}));//first argument is engine name which can be anything
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/:id/:playas',function(req,res){
-
+  res.render('index',{id: req.params.id, playas: req.params.id.playas});
 })
 
 var rooms = ['room1' , 'room2' , 'room3'];
