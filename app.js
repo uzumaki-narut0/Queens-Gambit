@@ -12,6 +12,10 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/:id/:playas',function(req,res){
+
+})
+
 var rooms = ['room1' , 'room2' , 'room3'];
 var users = {};	//users list
 
@@ -26,6 +30,9 @@ io.on('connection', function(socket){
   	socket.username = user_name;
   	socket.uniquekey = Math.random().toString(36).slice(2);	//a unique key corresponding to this game
 
+    
+
+    /*
   	users[user_name] = user_name;
   	console.log(Object.keys(users).length);
 
@@ -39,9 +46,10 @@ io.on('connection', function(socket){
   	socket.emit('updatechat','SERVER','You have connected to room1');
 
   	//echo to room1 that a person has connected to room1
-  	socket.broadcast.to('room1').emit('updatechat','SERVER',user_name + 'has connected to this room');
+  	socket.broadcast.to('room1').emit('updatechat','SERVER',user_name + 'has created this room');
 
   	socket.emit('updaterooms',rooms,'room1');
+    */
 
   });
 
@@ -67,7 +75,7 @@ io.on('connection', function(socket){
   	socket.emit('updatechat','SERVER','You have connected to room1');
 
   	//echo to room1 that a person has connected to room1
-  	socket.broadcast.to('room1').emit('updatechat','SERVER',user_name + 'has connected to this room');
+  	socket.broadcast.to('room1').emit('updatechat','SERVER',user_name + 'has joined this room');
 
   	socket.emit('updaterooms',rooms,'room1');
 
@@ -82,6 +90,7 @@ io.on('connection', function(socket){
   	io.sockets.in(socket.room).emit('updateboard',socket.username, source, target);
 
   });
+
 
   //when the user disonnects... perform this
   socket.on('disonnect',function(){

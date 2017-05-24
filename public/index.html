@@ -144,12 +144,16 @@
 
   <script type="text/javascript">
     $("#creategame").on('click', function(){
-      socket.emit('play',prompt("What's your name"));
-      console.log(Math.random().toString(36).slice(2)); //generating random key
+      //socket.emit('play',prompt("What's your name"));
+       //generating random key
+      var uniquekey = Math.random().toString(36).slice(2);
+      $.get('http://localhost:5000/' + uniquekey + '/play_as=white');
     });
 
     $("#joingame").on("click", function(){
-      socket.emit('join',prompt("What's your name"), prompt("unique key of the game"));
+      //socket.emit('join',prompt("What's your name"), prompt("unique key of the game"));
+      var uniquekey = prompt("Unique key of the game?");
+      $.get('http://localhost:5000/' + uniquekey + '/play_as=black');
     });
   </script>
   
