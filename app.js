@@ -14,11 +14,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+  res.render('home_page');
 });
 
 app.get('/:id/:playas',function(req,res){
+  console.log('here');
   res.render('index',{id: req.params.id, playas: req.params.id.playas});
+  //res.status(200).send(html);
 })
 
 var rooms = ['room1' , 'room2' , 'room3'];
