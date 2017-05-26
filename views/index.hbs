@@ -49,6 +49,7 @@
   <script type="text/javascript">
     // board defaults to the starting position when called with no parameters
     var game = new Chess();
+    var chance = "white";
 
 
     // do not pick up pieces if the game is over
@@ -63,18 +64,40 @@
 
     var onDrop = function(source, target) {
       // see if the move is legal
-      var move = game.move({
-        from: source,
-        to: target,
-        promotion: 'q' // NOTE: always promote to a queen for example simplicity
-      });
+      if(chance == "{{playas}}")
+      {
+          var move = game.move({
+          from: source,
+          to: target,
+          promotion: 'q' // NOTE: always promote to a queen for example simplicity
+        });
 
-      // illegal move
-      if (move === null) return 'snapback';
-      console.log(source + " " + target);
-      var unique_key = "{{id}}";
-      console.log("indexx.hbs: " + unique_key);
-      socket.emit('sendmove',source, target, unique_key);
+        // illegal move
+        if (move === null) return 'snapback';
+
+        console.log(source + " " + target);
+        var unique_key = "{{id}}";
+        console.log("indexx.hbs: " + unique_key);
+        socket.emit('sendmove',source, target, unique_key);
+        var currplayer = "{{playas}}";
+        var nectplayer;
+        if(currplayer == "white")
+        {
+          nextplayer = "black";
+        }
+        else
+        {
+          nextplayer = "white";
+        }
+        socket.emit('whosechance', nextplayer, unique_key);
+
+      }
+      else
+      {
+        return'snapback';
+      }
+      
+      
       //updateStatus();
     };
 
@@ -126,6 +149,12 @@
       console.log('updating chat');
       console.log(data);
     });
+
+    socket.on('flipchance', function(currplayer){
+      chance = currplayer;
+    });
+
+
     socket.on('updateboard',function(source, target){
       //console.log(user);
       console.log("target : " + target);

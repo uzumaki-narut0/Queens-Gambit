@@ -91,6 +91,12 @@ io.on('connection', function(socket){
   });
 
 
+  socket.on('whosechance',function(currplayer, uniquekey){
+    console.log('in whose chance');
+    io.sockets.in(game_room[uniquekey]).emit('flipchance',currplayer);
+  })
+
+
   //when the user disonnects... perform this
   socket.on('disonnect',function(){
   	//echo globally that this client has left
