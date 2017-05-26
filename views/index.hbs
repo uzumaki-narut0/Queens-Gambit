@@ -72,7 +72,9 @@
       // illegal move
       if (move === null) return 'snapback';
       console.log(source + " " + target);
-      socket.emit('sendmove',source, target);
+      var unique_key = "{{id}}";
+      console.log("indexx.hbs: " + unique_key);
+      socket.emit('sendmove',source, target, unique_key);
       //updateStatus();
     };
 
@@ -89,6 +91,7 @@
     //var ans = "{{obj.playas}}";
     //console.log(ans);
     var x = "{{playas}}";
+    
     console.log(x);
     var cfg = {
       orientation: x,
@@ -106,16 +109,25 @@
     var socket = io();
 
     //on connection to server ask for user's name with an anonymous callback
+    var color = "{{playas}}";
+    var key = "{{id}}"
+
     socket.on('connect',function(){
-      console.log('client successfully connected');
+      console.log('client successfully connected index');
+      if(color == "white")
+        socket.emit('create', key);
+      else
+      {
+        socket.emit('join', key);
+      }
     });
 
     socket.on('updatechat',function(user, data){
       console.log('updating chat');
       console.log(data);
     });
-    socket.on('updateboard',function(user, source, target){
-      console.log(user);
+    socket.on('updateboard',function(source, target){
+      //console.log(user);
       console.log("target : " + target);
       console.log("source : " + source);
 

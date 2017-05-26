@@ -51,79 +51,15 @@
   </main>
 </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="js/chessboard-0.3.0.js"></script>
-  <script src="js/gamelogic.js"></script>
-  <script>
-    var socket = io();
-
-    //on connection to server ask for user's name with an anonymous callback
-    socket.on('connect',function(){
-      console.log('client successfully connected');
-    });
-
-    socket.on('updatechat',function(user, data){
-      console.log('updating chat');
-      console.log(data);
-    });
-    socket.on('updateboard',function(user, source, target){
-      console.log(user);
-      console.log("target : " + target);
-      console.log("source : " + source);
-
-      board.move(source + '-' + target);
-
-      var move = game.move({
-      from: source,
-      to: target,
-      promotion: 'q' // NOTE: always promote to a queen for example simplicity
-    });
-      
-      updateStatus();
-
-      function updateStatus() {
-          var status = '';
-
-          var moveColor = 'White';
-          if (game.turn() === 'b') {
-            moveColor = 'Black';
-          }
-
-          // checkmate?
-          if (game.in_checkmate() === true) {
-            status = 'Game over, ' + moveColor + ' is in checkmate.';
-          }
-
-          // draw?
-          else if (game.in_draw() === true) {
-            status = 'Game over, drawn position';
-          }
-
-          // game still on
-          else {
-            status = moveColor + ' to move';
-
-            // check?
-            if (game.in_check() === true) {
-              status += ', ' + moveColor + ' is in check';
-            }
-          }
-
-          console.log(status);
-          console.log(game.fen());
-          console.log(game.pgn());
-        };
-
-    });
-  </script>
-
   <script type="text/javascript">
     $("#creategame").on('click', function(){
       //socket.emit('play',prompt("What's your name"));
        //generating random key
       var uniquekey = Math.random().toString(36).slice(2);
+      //socket.emit()
       $.get('http://localhost:8080/' + uniquekey + '/white', function(data){
         window.location = 'http://localhost:8080/' + uniquekey + '/white';
+       // socket.emit('create',uniquekey);
       });
     });
 
@@ -132,6 +68,8 @@
       var uniquekey = prompt("Unique key of the game?");
       $.get('http://localhost:8080/' + uniquekey + '/black', function(data){
         window.location = 'http://localhost:8080/' + uniquekey + '/black';
+        //socket.emit('join',uniquekey);
+
       });
     });
   </script>

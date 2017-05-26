@@ -27,78 +27,66 @@ app.get('/:id/:playas',function(req,res){
   //res.status(200).send(html);
 })
 
-var rooms = ['room1' , 'room2' , 'room3'];
+var game_room = {};
 var users = {};	//users list
 
 io.on('connection', function(socket){
   console.log('a user connected');
 
   //when the client emits play, this listenes and executes
-  socket.on('play',function(user_name){
+  socket.on('create',function(uniquekey){
 
-  	//stores the username in socket session for this client
-  	console.log(user_name);
-  	socket.username = user_name;
-  	socket.uniquekey = Math.random().toString(36).slice(2);	//a unique key corresponding to this game
+  	socket.uniquekey = uniquekey;	//a unique key corresponding to this game
 
-    
+    game_room[uniquekey] = uniquekey;
+  	socket.room = game_room[uniquekey];
+    console.log(socket.room);
 
-    /*
-  	users[user_name] = user_name;
-  	console.log(Object.keys(users).length);
-
-  	//stores the user room in socket session for this client
-  	socket.room = 'room1';
-
-  	//send client to room1
-  	socket.join('room1');
+  	//send client to room game_room[uniquekey]
+  	socket.join(game_room[uniquekey]);
 
   	//echo to client they have connected!
-  	socket.emit('updatechat','SERVER','You have connected to room1');
+  	socket.emit('updatechat','SERVER','You have connected to room' + game_room[uniquekey]);
 
   	//echo to room1 that a person has connected to room1
-  	socket.broadcast.to('room1').emit('updatechat','SERVER',user_name + 'has created this room');
+  	socket.broadcast.to(game_room[uniquekey]).emit('updatechat','SERVER',"user_name" + 'has created this room');
 
-  	socket.emit('updaterooms',rooms,'room1');
-    */
+  	//socket.emit('updaterooms',rooms,'room1');
 
   });
 
 
 
   //when the client emits join, this listenes and executes
-  socket.on('join',function(user_name, unique_key){
+  socket.on('join',function(uniquekey){
 
   	//stores the username in socket session for this client
-  	console.log(user_name + " : " + unique_key);
-  	socket.username = user_name;
-
-  	users[user_name] = user_name;
-  	console.log(Object.keys(users).length);
-
-  	//stores the user room in socket session for this client
-  	socket.room = 'room1';
-
+  	console.log(uniquekey);
+  //	socket.username = user_name;
   	//send client to room1
-  	socket.join('room1');
+    socket.room = game_room[uniquekey];
+  	socket.join(game_room[uniquekey]);
+    console.log(socket.room);
 
   	//echo to client they have connected!
-  	socket.emit('updatechat','SERVER','You have connected to room1');
+  	socket.emit('updatechat','SERVER','You have connected to '+ game_room[uniquekey]);
 
   	//echo to room1 that a person has connected to room1
-  	socket.broadcast.to('room1').emit('updatechat','SERVER',user_name + 'has joined this room');
 
-  	socket.emit('updaterooms',rooms,'room1');
+  	socket.broadcast.to(game_room[uniquekey]).emit('updatechat','SERVER',"user_name" + 'has joined this room');
+
+  //	socket.emit('updaterooms',rooms,'room1');
 
   });
 
 
   //when the client emits send move, this listenes and executes
-  socket.on('sendmove',function(source, target){
+  socket.on('sendmove',function(source, target, uniquekey){
 
   	//we tell the client to execute 'updateboard' with the parameters
   	console.log(source + " " + target);
-  	io.sockets.in(socket.room).emit('updateboard',socket.username, source, target);
+   // console.log(game_room[uniquekey]);
+  	io.sockets.in(game_room[uniquekey]).emit('updateboard', source, target);
 
   });
 
@@ -106,7 +94,7 @@ io.on('connection', function(socket){
   //when the user disonnects... perform this
   socket.on('disonnect',function(){
   	//echo globally that this client has left
-  	socket.broadcast.emit('updatechat','SERVER',socket.username + " disonnected");
+  	socket.broadcast.emit('updatechat','SERVER', " disonnected");
   	socket.leave(socket.room);
   });
 
