@@ -122,16 +122,16 @@
       //socket.emit('play',prompt("What's your name"));
        //generating random key
       var uniquekey = Math.random().toString(36).slice(2);
-      $.get('http://localhost:8080/' + uniquekey + '/play_as=white', function(data){
-        window.location = 'http://localhost:8080/' + uniquekey + '/play_as=white';
+      $.get('http://localhost:8080/' + uniquekey + '/white', function(data){
+        window.location = 'http://localhost:8080/' + uniquekey + '/white';
       });
     });
 
     $("#joingame").on("click", function(){
       //socket.emit('join',prompt("What's your name"), prompt("unique key of the game"));
       var uniquekey = prompt("Unique key of the game?");
-      $.get('http://localhost:8080/' + uniquekey + '/play_as=black', function(data){
-        window.location = 'http://localhost:8080/' + uniquekey + '/play_as=black';
+      $.get('http://localhost:8080/' + uniquekey + '/black', function(data){
+        window.location = 'http://localhost:8080/' + uniquekey + '/black';
       });
     });
   </script>

@@ -13,6 +13,7 @@
     "chess.js": "^0.10.2",
     "express": "^4.15.3",
     "express-handlebars": "^3.0.0",
+    "handlebars-form-helpers": "^0.1.3",
     "socket.io": "^2.0.1"
   }
 }

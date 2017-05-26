@@ -4,6 +4,8 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);	//socket server which integrates with (mounts on) http server
 var hbs = require('express-handlebars');
+var handlebars = require('handlebars');
+var helpers = require('handlebars-form-helpers').register(handlebars);
 
 //app.use(express.static('public'));
 app.use(express.static(__dirname + '/public'));
@@ -18,8 +20,10 @@ app.get('/', function(req, res){
 });
 
 app.get('/:id/:playas',function(req,res){
-  console.log('here');
-  res.render('index',{id: req.params.id, playas: req.params.id.playas});
+  console.log(req.params);
+  res.render('index', {id: req.params.id,
+    playas: req.params.playas
+  });
   //res.status(200).send(html);
 })
 

@@ -35,7 +35,12 @@ var onSnapEnd = function() {
 
 
 //configuration to be passed to ChessBoard constructor
+
+//console.log(\{\{playas\}\});
+var ans = "{{obj.playas}}";
+console.log(ans);
 var cfg = {
+  orientation: "{{obj.playas}}",
   draggable: true,
   position: 'start',
   onDragStart: onDragStart,
