@@ -1,3 +1,4 @@
+
 <body style="background: url('/img/chess7.jpg'); background-size: cover">
   <script src="js/chess.js"></script>
 
@@ -32,7 +33,7 @@
        //generating random key
       var uniquekey = Math.random().toString(36).slice(2);
       //socket.emit()
-      $.get('http://localhost:8080/' + uniquekey + '/white', function(data){
+      $.get('https://queensgambit.herokuapp.com/' + uniquekey + '/white', function(data){
         window.location = 'http://localhost:8080/' + uniquekey + '/white';
        // socket.emit('create',uniquekey);
       });
@@ -41,7 +42,7 @@
     $("#joingame").on("click", function(){
       //socket.emit('join',prompt("What's your name"), prompt("unique key of the game"));
       var uniquekey = prompt("Unique key of the game?");
-      $.get('http://localhost:8080/' + uniquekey + '/black', function(data){
+      $.get('https://queensgambit.herokuapp.com/' + uniquekey + '/black', function(data){
         window.location = 'http://localhost:8080/' + uniquekey + '/black';
         //socket.emit('join',uniquekey);
 
