@@ -34,7 +34,7 @@
       var uniquekey = Math.random().toString(36).slice(2);
       //socket.emit()
       $.get('https://queensgambit.herokuapp.com/' + uniquekey + '/white', function(data){
-        window.location = 'http://localhost:8080/' + uniquekey + '/white';
+        window.location = 'https://queensgambit.herokuapp.com/' + uniquekey + '/white';
        // socket.emit('create',uniquekey);
       });
     });
@@ -43,7 +43,7 @@
       //socket.emit('join',prompt("What's your name"), prompt("unique key of the game"));
       var uniquekey = prompt("Unique key of the game?");
       $.get('https://queensgambit.herokuapp.com/' + uniquekey + '/black', function(data){
-        window.location = 'http://localhost:8080/' + uniquekey + '/black';
+        window.location = 'https://queensgambit.herokuapp.com/' + uniquekey + '/black';
         //socket.emit('join',uniquekey);
 
       });
