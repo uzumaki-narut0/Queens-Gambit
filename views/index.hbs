@@ -17,14 +17,8 @@
               <input class="mdl-textfield__input" type="text" id="message">
               <label class="mdl-textfield__label" for="message">Message...</label>
             </div>
-            <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+            <button id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
               Send
-            </button>
-          </form>
-          <form id="image-form" action="#">
-            <input id="mediaCapture" type="file" accept="image/*,capture=camera">
-            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-              <i class="material-icons">image</i>
             </button>
           </form>
         </div>
@@ -32,12 +26,6 @@
       <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--7-col-tablet mdl-cell--7-col-desktop">
 
       <div id="board"></div>
-      </div>
-
-
-      <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
-        <div class="mdl-snackbar__text"></div>
-        <button class="mdl-snackbar__action" type="button"></button>
       </div>
 
     </div>
@@ -203,5 +191,50 @@
           console.log(game.pgn());
         };
 
+    });
+  </script>
+
+
+  <!--Implementing the chat part-->
+  <script type="text/javascript">
+    $("#message-form").submit(function(event){
+      event.preventDefault(); 
+      socket.emit('sendchat',$('#message').val(), key);
+      //console.log($('#message').val());
+      $('#message').val('');// = '';
+
+    });
+
+    socket.on('updatechatui',function(message){
+      console.log(message);
+
+      var picUrl = '/img/chess.jpg';
+      MESSAGE_TEMPLATE =
+      '<div class="message-container">' +
+      '<div class="spacing"><div class="pic"></div></div>' +
+      '<div class="message"></div>' +
+      '<div class="name"></div>' +
+      '</div>';
+
+      //var div = document.getElementById(key);
+        // If an element for that message does not exists yet we create it.
+        //if (!div) {
+          var container = document.createElement('div');
+          container.innerHTML = MESSAGE_TEMPLATE;
+          div = container.firstChild;
+          //div.setAttribute('id', key);
+          $("#messages").append(div);
+        //}
+        div.querySelector('.message').textContent = message;
+        var ht = document.getElementById("messages").scrollHeight;
+        $("#messages").scrollTop(ht);
+
+        if (picUrl) {
+          div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
+        }
+        div.querySelector('.name').textContent = name;
+        setTimeout(function() {
+          div.classList.add('visible')
+        }, 1);
     });
   </script>

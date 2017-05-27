@@ -96,6 +96,9 @@ io.on('connection', function(socket){
     io.sockets.in(game_room[uniquekey]).emit('flipchance',currplayer);
   })
 
+  socket.on('sendchat',function(msg, uniquekey){
+    io.sockets.in(game_room[uniquekey]).emit('updatechatui',msg);
+  });
 
   //when the user disonnects... perform this
   socket.on('disonnect',function(){
